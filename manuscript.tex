@@ -1,0 +1,271 @@
+\documentclass[12pt]{article}
+\renewcommand{\baselinestretch}{1.5} 
+
+\setlength{\parskip}{1ex plus0.5ex minus0.5ex} 
+\setlength{\textheight}{9.0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0in}
+\addtolength{\topmargin}{-.875in}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{mathtools}
+%\usepackage{natbib}
+\usepackage{epigraph}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage[colorinlistoftodos]{todonotes}
+
+% bib stuff from Will
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[citestyle=authoryear,bibstyle=authoryear,sorting=nyt,maxcitenames=2,maxbibnames=10,minbibnames=6,doi=true,url=false,isbn=false,firstinits=true,uniquename=false,uniquelist=false]{biblatex}
+\addbibresource{bib.bib}
+\renewbibmacro*{name:andothers}{% Based on name:andothers from biblatex.def
+  \ifboolexpr{
+    test {\ifnumequal{\value{listcount}}{\value{liststop}}}
+    and
+    test \ifmorenames
+  }
+    {\ifnumgreater{\value{liststop}}{1}
+       {\finalandcomma}
+       {}%
+     \andothersdelim\bibstring[]{andothers}}
+    {}}
+\renewcommand*{\finalnamedelim}{%
+  \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+  \addspace and\space}
+\renewbibmacro{in:}{}
+\AtEveryBibitem{%
+  \clearfield{day}%
+  \clearfield{month}%
+  \clearfield{endday}%
+  \clearfield{endmonth}%
+  \clearfield{language}%
+  \clearfield{number}%
+}
+\DeclareFieldFormat[article]{citetitle}{#1}
+\DeclareFieldFormat[article]{title}{#1}
+\DeclareFieldFormat[article]{pages}{#1}
+\DeclareNameAlias{sortname}{last-first}
+
+% no parentheses around year in bibliography
+\makeatletter
+\ifcsundef{abx@macro@\detokenize{date+extrayear}}{%
+  }{%
+  \renewbibmacro*{date+extrayear}{%
+    \iffieldundef{year}{%
+      }{%
+      \addperiod\space
+      \printtext{\printdateextra}%
+    }%
+  }%
+}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% WDP: Something to make track changes easier to track
+\usepackage{changes}
+\setdeletedmarkup{\textcolor{red}{\sout{#1}}}
+%\usepackage[final]{changes} % - to see the "final" version
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{flushleft}
+{\large{Cryptic diversity in the model fern genus \textit{Ceratopteris} (Pteridaceae)}}
+
+Sylvia P. Kinosian\textsuperscript{a,}*, William D. Pearse\textsuperscript{a}, and Paul G. Wolf\textsuperscript{b}
+
+{\small{\textsuperscript{a} Ecology Center and Department of Biology, Utah State University, Logan, Utah, USA, 84322\\
+\textsuperscript{b} Department of Biological Sciences, University of Alabama in Huntsville, Hunstville, Alabama, USA, 35899}}
+
+\textbf{Abstract}
+
+Cryptic species are present throughout the tree of life. They are especially prevalent in ferns, because of processes such hybridization, polyploidy, and reticulate evolution. In addition, the morphological simple body plan of ferns limits phenotypic variation and makes it difficult to detect cryptic species in ferns without molecular work. The model fern genus \textit{Ceratopteris} has long been suspected to harbor cryptic diversity, specifically in the highly polymorphic \textit{C. thalictroides}. Yet no studies have included samples from throughout the pan-tropical range of \textit{Ceratopteris} or utilized genomic sequencing, making it difficult to assess the full extent of cryptic variation within this genus. Here, we present the first multilocus phylogeny of the genus using reduced representation genomic sequencing (RADseq) and examine population structure, phylogenetic relationships, and ploidy level variation. We recover similar species relationships found in previous studies, find support for a named cryptic species as genetically distinct, and identify a novel putative species
+from within \textit{C. thalictroides} \textit{sensu latu} in Central and South America.
+
+Keywords: C-fern, polyploid, systematics, RADseq
+
+* Corresponding author at: 5305 Old Main Hill, Logan, Utah, USA, 84322. \\ \textit{E-mail address:} sylvia.kinosian@gmail.com (S. P. Kinosian).
+
+\setlength{\parindent}{5ex}
+
+\vspace{30cm}
+\end{flushleft}
+\begin{flushleft}
+{\large\textbf{1. Introduction}}\\
+
+Describing the formation of species is essential to understanding the patterns and processes that create biodiversity. Detecting differences among species becomes increasingly challenging when taxa are morphologically similar, but genetically distinct and reproductively isolated \autocite{Bickford2007, Masuyama1992, Paris1989}. Such cryptic species have often been historically described as one larger species, or species complex, due to morphological similarities \autocite{Paris1989}. However, advances in molecular methods have revealed that cryptic species can be monophyletic with disparate ecological niches and functions \autocite{Amato2007, Hebert2004, Sattler2007, Southgate2019}; in contrast, cryptic species complexes can be paraphyletic and separated by considerable evolutionary time, yet look similar and occupy comparable niches \autocite{Amor2014, Cunnington2005}. 
+
+Despite the recent shift in molecular approaches to investigate cryptic species, much is still unknown about their evolutionary history and ecosystem functions. Cryptic species complexes often have very broad distributions \autocite{Der2009, Knowlton1993, Nygren2014} and can occur in sympatry, allopatry, or parapatry \autocite{Bickford2007}, making adequate sampling challenging. In ferns, deciphering species boundaries can be even more difficult due to their ease of dispersal via spores, making gene flow possible across vast distances \autocite{Barrington1993, Tryon1970}. Compared to seed plants, ferns have a very high prevalence of polyploidy and reticulate evolution \autocite{Barrington1989, Paris1989, Otto2000, Otto2000}. Such genomic changes can contribute to cryptic variation by altering niche requirements or offspring viability \autocite{Otto2007, Southgate2019, Masuyama2002}, yet be essentially phenotypically invisible \autocite{Patel2019}.
+
+The fern genus \textit{Ceratopteris} Brong. is a pan-tropical aquatic clade consisting of seven named species, three of which are cryptic and tetraploid \autocite{PPGI, LloydTax1974, Masuyama2010}. \textit{Ceratopteris} is perhaps best known for the model organism \textit{C. richardii}, which has been used as such since the late twentieth century \autocite{Banks1994, hickock1987, Hickok1995}. Sometimes called the ``\textit{Arabidopsis} of the fern world'' \autocite{Sessa2014}, \textit{C. richardii} is an ideal model system because of its fast life cycle and ease of cultivation \autocite{hickock1987}; in addition, it can be transformed with recombinant DNA \autocite{Muthukumar2013, Plackett2014}, has a reference ontogeny framework \autocite{Conway2019-cd}, and is currently the only homosporous fern to have a whole genome sequence \autocite{Marchant2019}. In addition to \textit{C. richardii}, other \textit{Ceratopteris} species have been studied in a lab environment \autocite{hickok1974, Hickok1977}, and have potential for further research. Concerningly, the species boundaries within the genus are blurry, and there is evidence that all species in the group (both diploid and tetraploid) hybridize to some extent \autocite{Adjie2007, hickok1974, Hickok1977, Hickok1979, LloydTax1974}. In such a well-utilized model genus, there is still a need to better understand species boundaries, evolutionary history, and occurrences of cryptic species. In particular, we need to understand the evolutionary dynamics of the \textit{Ceratopteris} genus as a whole in order to best utilize this model system for future work. 
+
+The first and only comprehensive monograph for \textit{Ceratopteris} was written by Lloyd in 1974, and employed a matrix of morphological traits to identify four species in the genus\nocite{LloydTax1974}. However, \textit{Ceratopteris} is a notorious group in terms of morphology: there are relatively few informative physical characters \autocite{LloydTax1974}; in addition, habitat and developmental stage can have a large effect on plant phenotype \autocite{Masuyama1992}. Most challenging for species delimitation, however, is that rampant hybridization in the genus is known to further alter morphology and so make field identification difficult \autocite{hickok1974, LloydTax1974, Masuyama2010}. While Lloyd named four species, he noted that \textit{C. thalictroides}, the most widespread species in the genus, is ``highly polymorphic'' \autocite{LloydTax1974} and is likely a cryptic species complex. In response, Masuyama and colleagues conducted a series of studies on Asian plants under the name of \textit{C. thalictroides}, examining chloroplast DNA and cross-breeding \autocite{Masuyama2002}, cytological characteristics \autocite{Masuyama2005}, morphological traits \autocite{Masuyama1992, Masuyama2008}, and nuclear DNA \autocite{Adjie2007}. As a result, three cryptic species and two varieties were named from entities originally described as \textit{C. thalictroides} \autocite{Masuyama2010}. Molecular evidence suggests that all three cryptic species of \textit{C. thalictroides} have independent hybrid allopolyploid origins and are paraphyletic \autocite{Adjie2007}, the latter providing the most compelling evidence that they cannot be described under the same name. However, this study included only one nuclear marker; multilocus analyses are generally needed to substantiate paraphyly and polyploid origins \autocite{Eaton2013, Jorgensen2017}, and particularly in a case as complex as \textit{C. thalictroides}. In addition, while cryptic species in \textit{Ceratopteris} have been investigated in the Old World, there is a similar problem of morphological variability in New World \textit{C. thalictroides} \autocite{Masuyama2010, LloydTax1974}, indicating a potential for more cryptic species to be discovered.
+
+As a well-studied, pan-tropical group known to include cryptic species, \textit{Ceratopteris}, and in particular \textit{C. thalictroides}, is an ideal system in which to study the process of cryptic speciation. In this study, we produce the first multilocus genomic analysis of \textit{Ceratopteris} using restriction-site associated DNA sequencing (RADSeq). RADSeq is a cost-effective way to generate a large amount of genomic data, and many downstream analysis tools are currently available. We apply three approaches to identify cryptic species. First, we estimate population structure and hybridization; second, we reconstruct phylogenetic relationships among samples; finally, we investigate ploidy levels across individuals. This study is a step towards resolving species boundaries within this complex genus. Our work will also provide a phylogenetic reference for future studies on \textit{Ceratopteris}, as well as find areas within the genus in need of additional research.
+
+\vspace{1cm}
+
+{\large\textbf{2. Materials and methods}}
+
+To best analyze the cryptic diversity within \textit{Ceratopteris} we gathered samples from across its pan-tropical distribution for 5 of 7 species. We utilized RADSeq to generate a very large genomic dataset, which was processed using the ipyrad pipeline \autocite{Eaton2020} for downstream analysis. Our three-part approach for assessing cryptic diversity takes advantage of the flexibility of RADSeq data, and provides a unique window into the processes of speciation and diversification in a complex genus. 
+
+All parameter values and code for data processing and downstream analyses can be found on GitHub (github.com/sylviakinosian/ceratopteris\_RADSeq).
+
+\textbf{2.1. Taxon sampling}
+
+Because of its broad distribution, we chose to use a combination of herbarium and silica-dried material from field collections to sample \textit{Ceratopteris} (Fig. \ref{map}). We started with 90 samples, 56 from herbarium specimens and 34 silica-dried tissue. These samples represented five of seven named species of \textit{Ceratopteris}; we did not include \textit{C. oblongiloba} Masuyama \& Watano and \textit{C. froesii} Brade. These two missing species were recently named cryptic species of \textit{C. thalictroides} (L.) Brongn. \autocite{Masuyama2010}. We also included one sample of \textit{Acrostichum aureum} from Australia for use as an outgroup. Herbarium specimens were chosen based on age (less than about 30 years old) and color (leaves still green). These specimens were collected from the Harvard University Herbaria (HUH), the Steere Herbarium at the New York Botanic Garden (NY), the University of California, Berkeley (UC), the United States National Herbarium at the Smithsonian (US), and the Pringle Herbarum at the University of Vermont (VT). Fresh tissue collections were obtained from Taiwan, China, Costa Rica, and Australia. All field collections were stored on silica gel and vouchers were deposited at the Intermountain Herbarium (UTC) and James Cook University (JCT). See Supplementary data 1 for full details of specimen sources.
+
+\textbf{2.2. DNA extraction}
+
+Silica-dried plant tissue samples were supplied to the University of Wisconsin-Madison Biotechnology Center. DNA was extracted using the QIAGEN DNeasy mericon 96 QIAcube HT Kit, and quantified using the Quant-iT\textsuperscript{TM} PicoGreen\textsuperscript{\textregistered} dsDNA kit (Life Technologies, Grand Island, NY). 17 specimens were extracted using a modified CTAB method \autocite{Doyle1987} by SPK at Utah State University. These specimens were send to the University of Wisconsin-Madison Biotechnology Center, analyzed for quality and then pooled with the rest of the samples.
+
+\textbf{2.3. Library construction and sequencing}
+
+Libraries were prepared following Elshire \textit{et al.} (2011)\nocite{Elshire2011} with minimal modification; in short, 100 ng of DNA was digested using PstI and BfaI (New England Biolabs, Ipswich, MA) after which barcoded adapters amenable to Illumina sequencing were added by ligation with T4 ligase (New England Biolabs, Ipswich, MA). 96 adapter-ligated samples were pooled and amplified to provide library quantities amenable for sequencing, and adapter dimers were removed by SPRI bead purification. Quality and quantity of the finished libraries were assessed using the Agilent Bioanalyzer High Sensitivity Chip (Agilent Technologies, Inc., Santa Clara, CA) and Qubit\textsuperscript{\textregistered} dsDNA HS Assay Kit (Life Technologies, Grand Island, NY), respectively. A size selection was performed to obtain 300 - 450 BP fragments. Sequencing was done on Illumina NovaSeq 6000 2x150 S2. Images were analyzed using the standard Illumina Pipeline, version 1.8.2. 
+
+\textbf{2.4. Data processing}
+
+Raw data were demultiplexed using stacks v. 2.4 \autocite{Catchen2011, Catchen2013} process\_radtags allowing for a maximum of one mismatch per barcode. Demultiplexed FASTQ files were paired merged using ipyrad version 0.7.30 \autocite{Eaton2020}. Low quality bases, plus adapters and primers were removed from each read. Filtered reads were clustered at the default setting of 85\%, and we required a sequencing depth of 6 or greater per base and a minimum of 30 samples per locus to be included in the final assembly. The ipyrad pipeline defines a locus as a short sequence present across samples. From each locus, ipyrad identifies single nucleotide polymorphisms (SNPs); these SNPs are the variation used in our downstream analyses. Since stacks and ipyrad assume diploidy, we processed all samples as such. However, some species of \textit{Ceratopteris} are non-diploid \autocite{Adjie2007, Masuyama2010}, and so we explore the ploidy of each sample more thoroughly later in our analyses.
+
+Our initial sampling contained 95 specimens of \textit{Ceratopteris} and 1 sample of \textit{Acrostichum aureum}. Of the starting samples of \textit{Ceratopteris}, 26 either extracted very poorly or yielded few loci (less than 1000 loci per individual). Those samples were removed from downstream analysis. We also removed 13 samples from Australia, an area we were able to sample on a very fine spatial scale: one individual per Australian population was included in the final dataset so we did not over represent Australian specimens in our analyses. Our final data set included 56 samples of \textit{Ceratopteris} and 1 sample of \textit{A. aureum}. We included five specimens that were lower quality (see Supplementary data 1) because they were important in achieving a more even sampling distribution. They did not cluster with each other in our analyses, and their assignments in the population structure and phylogenetic analyses were biologically plausible. We did two separate runs of the ipyrad pipeline: one with \textit{A. aureum} for phylogenetic analysis, and one without for ploidy estimation and population structure analysis. Because \textit{A. aureum} is sister to \textit{Ceratopteris} and separated by over 30 million years \autocite{PPGI}, the total number of SNPs retrieved decreases when \textit{A. aureum} is included.
+
+\textbf{2.5. Population and genomic structure analysis}
+
+Because species of \textit{Ceratopteris} are known to hybridize \autocite{hickok1974}, but also form reproductively isolated cryptic species \autocite{Masuyama2002}, we wanted to examine population structure of the genus across its distribution. The program {\small{STRUCTURE}} v. 2.3.4 \autocite{Pritchard2000} is designed to determine admixture (hybridization) between populations of one or several closely related taxa. The program assumes that each individual's genome is a mosaic from \textit{K} source populations and use genotype assignments to infer population structure and admixture. In our analysis, we ran {\small{STRUCTURE}} for \textit{K} = 2 - 7 with 50 chains for each \textit{K}. We then used {\small{CLUMMPAK}} \autocite{Kopelman2015} to process the {\small{STRUCTURE}} output and estimate the best \textit{K} values \autocite{Evanno2005, Pritchard2000}.
+
+\textbf{2.6. Species tree inference}
+
+To construct a phylogeny for the samples of \textit{Ceratopteris}, we used the program {\small{TETRAD}}, which is included in the ipyrad analysis toolkit and is based on the software \small{SVDQuartets} \autocite{Chifman2015}. {\small{TETRAD}} utilizes the theory of phylogenetic invariants to infer quartet trees from a SNP alignment. Species relationships are estimated for all quartet combinations of individuals, then all quartet trees are joined into a species tree with the software {\small{wQMC}} \autocite{Avni2015}. Quartet methods were designed to reduce computational time for tree-building with maximum likelihood methods \autocite{Ranwez2001}, making them particularly useful for SNP datasets such as these.
+
+We ran {\small{TETRAD}} via Python 2.7.16 (www.python.org) for 56 samples of \textit{Ceratopteris}, and 1 sample of \textit{Acrostichum aureum} as the outgroup. Our input consisted of 57 individuals and 29849 SNPs; we ran 100 bootstrap iterations for the final consensus tree. We then plotted the final tree in R using the package phytools \autocite{Revell2012} and custom plotting functions.
+
+\textbf{2.7. Polyploidy analysis}
+
+Due to the presence of numerous cryptic species and morphological variation across the genus, we hypothesize there may be cryptic cytotype variation within species, especially the polymorphic \textit{C. thalictroides}. Since a majority our specimens were from herbarium specimens, we could not perform flow cytometry or chromosome squashes. We utilized the R v. 3.5.2 \autocite{R_352} package gbs2ploidy to detect ploidy variation across samples. This package was designed to detect ploidy levels in variable cytoptype populations (specifically quaking aspen, \textit{Populus tremuloides}) using low-coverage (2X) genotyping-by-sequencing (GBS) or RADSeq data; it was also tested on simulated data, and can detect diploids, triploids, or tetraploids \autocite{Gompert2017}. This package estimates ploidy from allele ratios, which are calculated from genome-average heterozygosity and bi-allelic SNPs isolated from a variant calling format (VCF) file, which is included in the output from ipyrad. 
+
+To perform our analyses with gbs2ploidy, we first used the script vcf2hetAlleleDepth.py (github.com/carol-rowe666/vcf2hetAlleleDepth) to convert the VCF file produced by ipyrad to the format needed for gbs2ploidy. We then ran gbs2ploidy, using the function estprops to estimate ploidy for each individual. We plotted the output from gbs2ploidy in R, with the mean posterior probability for allelic ratios on the \textit{y} axis and the 1:1, 2:1, and 3:1 ratios on the \textit{x} axis (see Fig. \ref{g2p}); we also included error bars for the 95\% equal tail probability intervals (ETPIs). We assigned ploidy to each individual using the  highest posterior mean estimate for a certain allelic proportion. If the ETPIs overlapped, we considered it an ambiguous assignment. We required sequencing depth to be 6X or greater during our data processing, which suggests that the ploidy assignments are likely accurate.
+
+\vspace{1cm}
+
+{\large\textbf{3. Results}}
+
+We retrieved an average of 2.58 x 10\textsuperscript{6} raw reads per sample (See Supplementary data 1). From the 60 herbarium samples and 36 silica-dried specimens, we retrieved an average of 5954 and 15029 loci, respectively. On average, we recovered nearly three times the number of loci from silica-dried specimens compared to the herbarium specimens. The 17 herbarium samples had been previously extracted before sending to the University of Wisconsin; the remaining samples (of both herbarium and silica-dried tissue) were extracted from leaf tissue at UW facilities. The UW facilities obtained much higher-quality extracted DNA than we did in our own lab, which contributed to some of the disparity between herbarium and silica-dried DNA quality.
+
+\textbf{3.1. Population and genomic structure analysis}
+
+We used the best \textit{K} method by \textcite{Evanno2005}, which determined a \textit{K} value of 4. The best \textit{K} estimate described in the STRUCTURE manual \autocite{Pritchard2000} determined a \textit{K} value of 5. We also visually examined \textit{K} = 2 - 7 and determined that \textit{K} = 5 was the most biologically meaningful because it separated each named species, and also showed some intra-specific variability (Fig. \ref{structure}). Increasing \textit{K} past 5 did not add any meaningful population clusters. 
+
+Named species of \textit{Ceratopteris} mostly clustered together at \textit{K} = 5 (Fig. \ref{structure}). \textit{Ceratopteris cornuta} and \textit{C. pteridoides} appeared as distinct populations. Unfortunately, all samples of \textit{C. richardii} had very poor sequencing depth and quality, so we cannot be sure if their variable population assignments are due to mis-identification of herbarium specimens, poor data quality, or unknown variation within the species.
+
+\textit{Ceratopteris thalictroides} \textit{sensu latu} split in to three groups at \textit{K} = 5. The first group consisted of several individuals identified as \textit{C. thalictroides} (on herbarium sheets or in the field) that clustered with \textit{C. gaudichaudii}, a cryptic species of \textit{C. thalictroides} \autocite{Masuyama2010}. The remaining individuals of \textit{C. thalictroides} grouped into two populations, one consisting of mostly Old World individuals, and the other as entirely New World individuals. These two populations were strongly differentiated by {\small{STRUCTURE}}, being separated at all \textit{K} values.
+
+\textbf{3.2. Species tree inference}
+
+ The phylogeny resulting from our species quartet inference shows a similar pattern to the {\small{STRUCTURE}} output (Fig. \ref{phy}). Most individuals of \textit{Ceratopteris pteridoides} form a monophyletic group, with one individual sister to the remaining species. \textit{Ceratopteris cornuta} came out in two places in the phylogeny: sister to Old World \textit{C. thalictroides}, and in a grade outside the \textit{C. gaudichaudii}, Old World and New World \textit{C. thalictroides} clade. Our phylogeny grouped all individuals placed in the \textit{C. gaudichaudii} population by {\small{STRUCTURE}} in a monophyletic clade, sister to New World \textit{C. thalictroides}. Samples of \textit{C. richardii} were also found in multiple places in the phylogeny; however, due to their lower data quality this is not surprising and little inference can be made about its phylogenetic position.
+
+\textbf{3.3. Ploidy assignment across species}
+
+\textit{Ceratopteris cornuta}, \textit{C. pteridoides}, and \textit{C. richardii} are known as a diploid (n = 39) \autocite{Adjie2007, Hickok1977}; \textit{Ceratopteris thalictroides} and \textit{C. gaudichaudii} are known as tetraploid, with some cytotypic variation (n = 77, 78) \autocite{Adjie2007, Masuyama2010}. 
+
+Three of four samples identified as \textit{Ceratopteris cornuta} showed relatively equal allelic proportions of 1:1 and 3:1, indicating a possible tetraploid; the fourth sample was ambiguous. Some samples of the known diploid \textit{C. pteridoides} showed a similar pattern, with one putative diploid and three tetraploids. However, both species are known as a diploid so this may be a mis-assignment of ploidy by our analysis. \textit{Ceratopteris gaudichaudii} had a high 1:1 allele ratio, suggesting that it is an allotetraploid. \textit{Ceratopteris thalictroides} is also known to be a tetraploid \autocite{LloydTax1974, Masuyama2010}, and individuals in our analysis were estimated to have 1:1, 2:1, and 3:1 allele ratios. Despite this variation, there was a distinct pattern between Old World and New World individuals: Old World \textit{C. thalictroides} was most commonly allotetraploid (1:1 allele ratio), whereas New World \textit{C. thalictroides} was either auto- or allotetraploid (relatively equal 1:1 and 3:1 allele ratios). 
+
+None of the individuals of \textit{C. richardii} could be assigned to a distinct ploidy, due to the poor data quality (see Fig. \ref{g2p}). We had a few other samples with very poor quality data (see Supplementary data 1), and their ploidy assignments were almost all ambiguous. Mis-assignment of ploidy could be due to coverage being at the lower end of the scale needed for true ploidy assignments, but it also could indicate hybridization leading to genomic complexity across species. Including chromosome counts and flow cytometry data in future analyses would help better understand the potential variation in polyploidy origins of \textit{C. thalictroides}.
+
+\vspace{1cm}
+
+{\large\textbf{4. Discussion}}
+
+To the best of our knowledge, this is the first application of next-generation sequencing techniques to the complex genus \textit{Ceratopteris}. Using \deleted{a }population genomic, phylogenetic, and ploidy inferences, we recover similar species relationships found in previous studies, find support for \textit{C. gaudichaudii} as genetically distinct, and identify a novel and distinct population from within \textit{C. thalictroides} \textit{sensu latu} in Central and South America.
+
+\textbf{4.1. Species boundaries in \textit{Ceratopteris}} 
+
+\textbf{4.1.1.\textit{Ceratopteris cornuta} and \textit{C. pteridoides}}
+
+\textit{Ceratopteris cornuta} is found from Africa to Northern Australia, and \textit{C. pteridoides} is endemic to the New World Tropics \autocite{LloydTax1974}. These two species are the most morphologically and genetically distinct in the genus. The sterile fronds of \textit{Ceratopteris cornuta} are consistently deltoid to lanceolate in shape, and pinnate to bipinnate in dissection \autocite{LloydTax1974}. Our population genomic analyses distinguished all specimens of \textit{C. cornuta} as a distinct population (at \textit{K} greater than 4, (Fig. \ref{structure}). All samples of \textit{C. cornuta} from Africa group together at \textit{K} = 2 - 7, along with one sample of \textit{C. thalictroides} from Nepal (\textit{Fraser-Jenkins 1564}) and an unnamed sample from Brazil (\textit{L. Camargo de Abreu 21}). The sample from Nepal has a deltoid to lanceolate pinna shape, characteristic of \textit{C. cornuta}. Lloyd (1974) notes that \textit{C. cornuta} is known to hybridize with \textit{C. thalictroides} in the eastern part of its range (Africa to India), however, the descriptions of such hybrids do not match the morphology this specimen (ie. \textit{Blanford 500} NY from Sikkim). The unnamed sample from Brazil grouped with \textit{C. cornuta} in both our population genomic and phylogenetic analyses. It has a very unusual morphology: the sterile leaves are 2-3 pinnate with very long-lanceolate pinnae. This could be a potential hybrid, or an undescribed morphotype of \textit{C. thalictroides} in South America.
+
+\textit{Ceratopteris pteridoides} has perhaps the most unique morphology of the genus: sterile fronds are simple, palmately or pinnately lobed, with enlarged, air-filled stipes (petioles). They are most commonly found unrooted and floating on the surface of slow-moving water \autocite{LloydTax1974}. \textit{Ceratopteris pteridoides} is also very strongly differentiated by the {\small{STRUCTURE}} analysis, with samples identified as \textit{C. pteridoides} showing little to no introgression from other populations. Influence from \textit{C. pteridoides} does appear in \textit{C. cornuta}, \textit{C. gaudichaudii}, and some samples of \textit{C. thalictroides}. However, this may be an artifact of slightly lower sequencing coverage in these individuals.
+
+\textbf{4.1.2. Cryptic species of \textit{C. thalictroides}}
+
+There was one named cryptic species of \textit{C. thalictroides} included in our study, \textit{Ceratopteris gaudichaudii}, which has two varieties: \textit{C. g. gaudichaudii} and \textit{C. g. vulgaris} \autocite{Masuyama2010}; both were included in our analysis. \textit{Ceratopteris g. vulgaris} has a much broader distribution than Guam endemic \textit{C. g. gaudichaudii}: it can be found throughout the Pacific in Japan, the Philippines, Hawaii, Guam, Taiwan, Southeast Asia, and Northern Australia \autocite{Masuyama2010}. Individuals named as \textit{C. thalictroides} from Taiwan, Hawaii, Japan, China, and Australia were identified via our population genomic and phylogenetic analyses as being \textit{C. gaudichaudii}, although it is difficult to tell from our limited sampling which sub-species they align with. The individual from Australia was examined and keyed out morphologically to \textit{C. g. vulgaris}, using the key from Masuyama and Watano (2010). This same individual was growing a few meters away from an individual of Old World \textit{C. thalictroides}, indicating that these two morphologically similar species are growing sympatrically but with limited gene flow. 
+
+All of the samples from Hawaii included in this study show alignment to \textit{C. gaudichaudii}. \textcite{Wagner1950} hypothesized that \textit{Ceratopteris} was not native to Hawaii, and may have been introduced from Asia either as a food source or accidentally as a weed in taro patches. \textcite{Lloyd1973} noted that Hawaiian \textit{Ceratopteris} was very similar to Japanese plants; the presence of \textit{C. gaudichaudii} in Hawaii fits with this theory because the type specimen is from Japan. In addition, work by \textcite{Hickok1979} supported Hawaiian \textit{Ceratopteris} as a distinct species from \textit{C. thalictroides}. One sample from Hawaii was shown to be a potential hybrid between \textit{C. gaudichaudii} and \textit{C. thalictroides}. The specimen (\textit{L. M. Crago 2005-058} US) is highly dissected and has may proliferous buds, which could indicate a hybrid or perhaps just an older plant.
+
+Two named cryptic species of \textit{C. thalictroides} were not included in our analysis: \textit{C. oblongiloba} and \textit{C. froseii}. \textit{Ceratopteris oblongiloba} is found throughout Cambodia, Indonesia (Sumatra and Java), the Philippines (Luzon), and Thailand (Malay) \autocite{Masuyama2010}. Our only specimen from this range is from the Philippines, and aligns entirely with Old World \textit{C. thalictroides}. This either indicates that we did not unknowingly sample \textit{C. oblongiloba}, or it has a lesser degree of genomic distinction than the other cryptic species, \textit{C. gaudichaudii}. \textit{Ceratopteris froesii} is a Brazilian endemic characterized by very small fronds: about 4 cm or less for fertile leaves \autocite{Masuyama2010}. We only had four accessions from Brazil, and none were small plants. Inclusion of this unique species in future studies may help us further understand New World diversity of \textit{Ceratopteris}.
+
+\textbf{4.1.3. \textit{Ceratopteris thalictroides, sensu latu}}
+
+Individuals of \textit{C. thalictroides} that did not group with \textit{C. gaudichaudii} break in to two groups: an Old World and a New World clade. These two clades are separated at all values of \textit{K} in our {\small{STRUCTURE}} analysis (Fig. \ref{structure}) and are paraphyletic (Fig. \ref{phy}), indicating strong genetic, if not morphological, separation.
+
+The Old World \textit{C. thalictroides} clade includes mostly individuals from Asia and Australia, but also a few from South America. Increasing \textit{K} in {\small{STRUCTURE}} did not break up this large group, suggesting that there is recent gene flow across the Pacific via long distance dispersal or human-mediated transport. One individual from Hawaii shows shared ancestry with \textit{C. gaudichaudii} and Old World \textit{C. thalictroides}, indicating that trans-Pacific gene flow might be possible. Another individual from Japan shows a similar pattern, but with a much larger proportion of its genome comprised of the Old World \textit{C. thalictroides} population. There may be continued gene flow not only within Old World \textit{C. thalictroides}, but between \textit{C. thalictroides} and \textit{C. gaudichaudii}.
+
+New World \textit{C. thalictroides} is strongly differentiated from Old World \textit{C. thalictroides} in our population structure analysis, and shows virtually no gene flow between any other species at \textit{K} greater than 3. This strong distinction between Old and New World is present in the phylogeny as well: New World \textit{C. thalictroides} is placed in a clade as sister to \textit{C. gaudichaudii}, and this clade is in turn sister to Old World \textit{C. thalictroides}.
+
+\textbf{4.2. Independent polyploid origins of cryptic species}
+
+There is evidence from the present study and previous molecular work to support independent origins of cryptic species in \textit{Ceratopteris thalictroides}. \textcite{Adjie2007} identified Asian \textit{C. thalictroides} \textit{sensu latu} as paraphyletic and hypothesized that \textit{C. thalictroides sensu strictu}, and the cryptic species \textit{C. gaudichaudii} and \textit{C. oblongiloba} are allopolyploid hybrids between \textit{C. cornuta} and an unnamed, potentially extinct, diploid progenitor. Interestingly, we do not see evidence of extensive, recent admixture within species of \textit{Ceratopteris} in our population structure analysis. There is some potential, limited hybridization within \textit{C. cornuta} and a few accessions of \textit{C. thalictroides}; but, \textit{C. gaudichaudii}, Old World and New World \textit{C. thalictroides} appear to be distinct species (Fig. \ref{structure}). We did not include the Asian cryptic species \textit{C. oblongiloba}, and so cannot say whether or not it is of recent hybrid origin. 
+
+Whereas our population structure analysis did not recover any evidence of recent hybridization in the \textit{Ceratopteris thalictroides} species complex, we cannot rule out the possibility of more ancient hybridization. Our ploidy estimation indicates potential differences in polyploid origin between cryptic species of \textit{C. thalictroides}: the Old World clade may be of allopolyploid origin, while the New World clade is of autopolyploid origin (Fig. \ref{g2p}, \ref{phy}). \textit{Ceratopteris gaudichaudii} is also potentially of allopolyploid origin, which supports the theory proposed by Adjie \textit{et al.} (2007). Different polyploid origins of \textit{C. thalictroides} were also suggested by McGrath \textit{et al.} (1994)\nocite{McGrath1994} from their work on gene copy number across the genus. New World and Old World \textit{C. thalictroides} are quite strongly differentiated by population structure and phylogenetic analyses (Fig. \ref{structure}, \ref{phy}), therefore separate polyploid origins for these two species could explain the mechanism of speciation. All of this evidence points to New World \textit{C. thalictroides} being a distinct cryptic species of possible autopolyploid origin.
+
+{\textbf{4.3. Evolutionary drivers in \textit{Ceratopteris}}}
+
+One of the most confusing aspects of \textit{Ceratopteris} is the disparity between morphological and genetic distinction between species. The three diploid species are relatively morphologically distinct \autocite{LloydTax1974}, especially in comparison to the cryptic species of \textit{C. thalictroides}. However, all the diploid species in the genus are known to hybridize with one another \autocite{hickok1974, Hickok1977, LloydTax1974}. In contrast, \textit{C. thalictroides} and associated cryptic species are much more similar morphologically, yet different populations (some named as cryptic species) can be almost entirely reproductively isolated \autocite{Hickok1979, Masuyama2010}. These inconsistencies have contributed to the taxonomic confusion in the genus. Our phylogenetic reconstruction does, however, support multiple distinct species in the genus, despite known hybridization.
+
+Weak reproductive boundaries are a theme across ferns, evidenced by numerous reticulate species complexes (\emph{e.g.}, \cite{Barrington1989,  Paris1989, Sessa2012a}), and intergeneric hybridization across 60 MY of evolution \autocite{Rothfels2015}. Although ferns do have some pre- and post-zygotic barriers \autocite{Haufler2016}, they are not as strong as in angiosperms (eg. \cite{De_Nettancourt1997, Lafon-Placette2016}). In addition, fern spores are very easily dispersed \autocite{Tryon1970, Smith1972}, which limits isolation by distance. All of these factors may be limiting genetic diversification and enabling hybridization in \textit{Ceratopteris}, despite its pan-tropical distribution. Continued gene flow may be contributing to the morphological similarities in the group, but there are certainly other factors at play.
+
+Another potential explanation for morphological stasis in \textit{Ceratopteris} relies on the influence ecological pressures \autocite{Bickford2007}. For a fern, \textit{Ceratopteris} has an unusually short life cycle of only about four months from spore to spore-bearing adult \autocite{Stein1971}. It grows in temporary water sources such as pond edges, swamps, or tarot patches \autocite{LloydTax1974}. Because of its ephemeral habitat, there are likely selective pressures for maintaining morphological stasis and rapid generation times. Fossil spore and leaf evidence also support morphological stasis in the Ceratopteridoideae dating back about 47 MY \autocite{Dettmann1992, Rozefelds2016-dr}. Fossil leaf impressions of the extinct genus \textit{Tecaropteris} from Australia are very similar morphologically to extant \textit{Ceratopteris} \autocite{Rozefelds2016-dr}. Australia has become increasingly dry and seasonal since the Eocene, when \textit{Tecaropteris} lived \autocite{Rozefelds2016-dr, McKenna2010}. Today, \textit{Ceratopteris} is exceedingly difficult to find during the dry season in northeastern Australia, but plentiful during the wet season, even growing as a weed in garden ponds (Dr. Ashley Field, personal communication). Almost all leaves of \textit{Ceratopteris} species are very thin, delicate, and herbaceous \autocite{LloydTax1974}. When removed from the plant they wilt into an unrecognizable state within minutes (personal observation, SPK). These low-energy investment leaves can be grown quickly and without an excess of resources from the plant \autocite{Reich2014, Wright2004}, potentially as a result of the fast life cycle employed by \textit{Ceratopteris}; any major shift in leaf development might inhibit \textit{Ceratopteris} from proceeding through its life cycle before its water source dries up. Therefore, despite the genetic diversity in the genus, morphological diversity has changed very little due to niche constraints. 
+
+\vspace{1cm}
+
+{\large\textbf{5. Conclusion}}
+
+In summary, our findings suggest that there may be more cryptic species of \textit{Ceratopteris thalictroides} yet to be discovered, especially in the New World. The potential for cryptic species in the Neotropics has been noted by several authors \autocite{Masuyama2010, LloydTax1974}, and this area of the world remains one of the least studied parts of the range of \textit{Ceratopteris}. Considering that this is where the model species \textit{C. richardii} is native, more work on all species of the genus in the New World is especially warranted. Researching \textit{Ceratopteris} in its natural environment is critical to inform future lab studies on \textit{C. richardii}, and the potential incorporation of other species for comparative studies. Most importantly, understanding speciation and cryptic species within \textit{Ceratopteris} is important for its use as model system, as well as increasing our knowledge of evolutionary processes in ferns and across vascular land plants.
+
+\vspace{1cm}
+
+{\large\textbf{Acknowledgements}}
+
+The authors thank the University of Wisconsin Biotechnology Center DNA Sequencing Facility for providing DNA extraction, library prep, and DNA sequencing facilities and services. We would also like to thank the University of Utah Center for High-Performance Computing, particularly Anita Orendt, for providing computational resources for data analyses. Thank you to Ashley Field and Tzu-Tong Kao helping with field work; Jacob S. Suissa and David Barrington for sending herbarium specimens; and Ryan Choi and Jacob S. Suissa for their thoughtful comments and edits to the manuscript. SPK is funded by a National Science Foundation Graduate Research Fellowship and the Joseph E. Greaves Endowed Scholarship from Utah State University. WDP and the Pearse lab are funded by National Science Foundation ABI‐1759965, NSF EF‐1802605 and United States Department of Agriculture Forest Service agreement 18‐CS‐11046000‐041.
+
+\vspace{1cm}
+
+{\large\textbf{Appendix A. Supplementary material}}
+
+Supplementary data 1.
+
+\end{flushleft}
+\vspace{30cm}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{figure1.pdf}
+\caption{Collection localities for samples of \textit{Ceratopteris} included in the present study. Not all accessions are included on this map because many herbarium specimens did not have GPS coordinates, or several samples were from nearly identical locations.}
+\label{map}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{figure2.pdf}
+\caption{Ploidy estimates for a subset of individuals. The X axis displays the estimated allele ratios (1:1, 2:1, 3:1), and the Y axis shows the Bayesian posterior proportion of allelic ratios; 95\% credible intervals are shown on each bar. The allelic ratio with the highest posterior estimate was used to assign ploidy to an individual. If the credible intervals overlapped, ploidy was assigned as ambiguous. Individuals included here are: \textit{Ceratopteris cornuta} (Cr03), \textit{C. gaudichaudii} (Ga02), \textit{C. pteridoides} (Pt03), New World \textit{C. thalictroides} (Th17), and Old World \textit{C. thalictroides} (Th51). See Supplementary data 1 for sample IDs and all ploidy estimates.}
+\label{g2p}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{figure3.pdf}
+\caption{STRUCTURE plots for \textit{K} = 2 - 7. \textit{K} = 5 was determined to be the most biologically informative, as increasing \textit{K} past 5 did not add any biologically meaningful groups. At \textit{K} = 5, all named species of \textit{Ceratopteris} fall into distinct populations, and C. thalictroides is split into three groups: Old World (yellow), New World (blue), and individuals grouping with \textit{C. gaudichaudii} (green).}
+\label{structure}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.75]{figure4.pdf}
+\caption{Phylogeny of \textit{Ceratopteris} generated via quartet methods, and ploidy assignments for the Old and New World \textit{Ceratopteris thalictroides} clades.}
+\label{phy}
+\end{figure}
+
+\vspace{30cm}
+\printbibliography
+\end{document}
